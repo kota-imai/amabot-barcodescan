@@ -77,10 +77,13 @@ const startScanner = () => {
         }
     });
 
-    // 検知後の処理
+    
     let scanResults = []
     let resultBuffer = []
+
+    // 検知後の処理
     Quagga.onDetected(function (result) {
+        // １つでもエラー率0.2以上があれば除外
         let isErr = false
         $.each(result.codeResult.decodedCodes, function (id, error) {
             if (error.error != undefined) {
@@ -141,17 +144,17 @@ const startScanner = () => {
 
     // JANコードチェックデジット
     // https://qiita.com/mm_sys/items/9e95c48d4684957a3940
-    function eanCheckDigit(barcodeStr) {
-        barcodeStr = ('00000' + barcodeStr).slice(-13);
+    function eanCheckDigit(str) {
+        str = ('00000' + str).slice(-13);
         let evenNum = 0, oddNum = 0;
-        for (var i = 0; i < barcodeStr.length - 1; i++) {
+        for (var i = 0; i < str.length - 1; i++) {
             if (i % 2 == 0) {
-                oddNum += parseInt(barcodeStr[i]);
+                oddNum += parseInt(str[i]);
             } else {
-                evenNum += parseInt(barcodeStr[i]);
+                evenNum += parseInt(str[i]);
             }
         }
         // 結果
-        return 10 - parseInt((evenNum * 3 + oddNum).toString().slice(-1)) === parseInt(barcodeStr.slice(-1));
+        return 10 - parseInt((evenNum * 3 + oddNum).toString().slice(-1)) === parseInt(str.slice(-1));
     }
 }
