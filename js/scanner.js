@@ -83,11 +83,11 @@ const startScanner = () => {
 
     // 検知後の処理
     Quagga.onDetected(function (result) {
-        // １つでもエラー率0.2以上があれば除外
+        // １つでもエラー率0.19以上があれば除外
         let isErr = false
         $.each(result.codeResult.decodedCodes, function (id, error) {
             if (error.error != undefined) {
-                if (parseFloat(error.error) > 0.2) {
+                if (parseFloat(error.error) > 0.19) {
                     isErr = true
                 }
             }
